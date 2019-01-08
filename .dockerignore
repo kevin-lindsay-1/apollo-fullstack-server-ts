@@ -1,0 +1,30 @@
+# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
+
+# repo information
+.git
+
+# API keys and secrets
+.env.local
+.env.*.local
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# production, if it already exists
+/build
+
+# testing
+/coverage
+
+# editor config
+.vscode
+
+# misc
+.DS_Store
+Thumbs.db
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
