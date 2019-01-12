@@ -13,8 +13,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "es5"
+    "strict": false,
+    "target": "es2015"
   },
   "include": ["src"]
 }

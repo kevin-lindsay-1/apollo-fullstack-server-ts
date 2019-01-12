@@ -17,10 +17,14 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    # if false, signup failed -- check errors
+    """
+    if false, booking failed -- check errors
+    """
     bookTrips(launchIds: [ID]!): TripUpdateResponse!
 
-    # if false, cancellation failed -- check errors
+    """
+    if false, cancellation failed -- check errors
+    """
     cancelTrip(launchId: ID!): TripUpdateResponse!
 
     login(email: String): String # login token

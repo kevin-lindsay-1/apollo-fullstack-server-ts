@@ -69,7 +69,9 @@ export default class UserAPI extends DataSource {
     if (!user || !user.id) {
       throw new AuthenticationError('You are not logged in');
     }
-    return !!this.store.trips.destroy({ where: { userId: user.id, launchId } });
+    return !!this.store.trips.destroy({
+      where: { userId: user.id, launchId },
+    });
   }
 
   public async getLaunchIdsByUser() {

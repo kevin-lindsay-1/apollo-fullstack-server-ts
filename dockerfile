@@ -46,6 +46,8 @@ RUN npm i --only-production
 # Get sources
 COPY --from=build build ./
 
+# Inform container runner which port to use
 EXPOSE $port
 
+# Start the server when the container initializes
 CMD [ "npm", "start" ]

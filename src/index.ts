@@ -1,14 +1,14 @@
 import { ApolloServer } from 'apollo-server';
+import { ContextFunction } from 'apollo-server-core';
 import isEmail from 'isemail';
 import LaunchAPI from './datasources/launch';
 import UserAPI from './datasources/user';
+import db from './db/models';
 import resolvers from './resolvers';
 import typeDefs from './schema';
-import { createStore } from './utils';
 
-// creates a sequelize connection once. NOT for every request
-// TODO: assign to correct type
-const store = createStore();
+// connect to ORM
+const store = db;
 
 // set up any dataSources our resolvers need
 const dataSources = () => ({
@@ -17,23 +17,22 @@ const dataSources = () => ({
 });
 
 // the function that sets up the global context for each resolver, using the req
-const context = async ({ req }) => {
+const context: ContextFunction = async ({ req }) => {
   // simple auth check on every request
   const auth: string = (req.headers && req.headers.authorization) || '';
+
   // const token = auth.slice('bearer '.length);
   const email = Buffer.from(auth, 'base64').toString('ascii');
 
   // if the email isn't formatted validly, return null for user
   if (!isEmail.validate(email)) return { user: null };
-  // find a user by their email
-  const users = await store.users.findOrCreate({ where: { email } });
-  const user = users && users[0] ? users[0] : null;
 
-  return {
-    user: {
-      ...user.dataValues,
-    },
-  };
+  // find a user by their email
+  const user = await store.users
+    .findOrCreate({ where: { email } })
+    .spread(i => i);
+
+  return { user };
 };
 
 // Set up Apollo Server
