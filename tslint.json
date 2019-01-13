@@ -6,7 +6,7 @@
     "tslint-config-prettier"
   ],
   "linterOptions": {
-    "exclude": ["src/generated/*.ts"]
+    "exclude": ["**/node_modules/**/*", "src/generated/**/*"]
   },
   "rules": {
     "object-literal-sort-keys": false

@@ -1,14 +1,26 @@
 import { ApolloServer } from 'apollo-server';
 import { ContextFunction } from 'apollo-server-core';
+import { Request } from 'express';
 import isEmail from 'isemail';
 import LaunchAPI from './datasources/launch';
 import UserAPI from './datasources/user';
 import db from './db/models';
+import { UserInstance } from './db/models/user';
 import resolvers from './resolvers';
 import typeDefs from './schema';
 
 // connect to ORM
 const store = db;
+
+export interface IDataSources {
+  launchAPI: LaunchAPI;
+  userAPI: UserAPI;
+}
+
+export interface IContext {
+  dataSources: IDataSources;
+  user: UserInstance;
+}
 
 // set up any dataSources our resolvers need
 const dataSources = () => ({
@@ -17,7 +29,7 @@ const dataSources = () => ({
 });
 
 // the function that sets up the global context for each resolver, using the req
-const context: ContextFunction = async ({ req }) => {
+const context: ContextFunction = async ({ req }: { req: Request }) => {
   // simple auth check on every request
   const auth: string = (req.headers && req.headers.authorization) || '';
 
@@ -54,16 +66,3 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`app running at ${url}`);
   });
 }
-
-// export all the important pieces for integration/e2e tests to use
-export {
-  dataSources,
-  context,
-  typeDefs,
-  resolvers,
-  ApolloServer,
-  LaunchAPI,
-  UserAPI,
-  store,
-  server,
-};

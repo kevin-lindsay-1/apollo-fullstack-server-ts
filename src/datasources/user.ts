@@ -1,12 +1,14 @@
-import { DataSource } from 'apollo-datasource';
+import { DataSource, DataSourceConfig } from 'apollo-datasource';
 import { AuthenticationError } from 'apollo-server-errors';
 import isEmail from 'isemail';
+import { IContext } from '..';
+import { IDatabase } from '../db/models';
 
 export default class UserAPI extends DataSource {
-  private store;
-  private context;
+  private store: IDatabase;
+  private context: IContext;
 
-  constructor({ store }) {
+  constructor({ store }: { store: IDatabase }) {
     super();
     this.store = store;
   }
@@ -17,7 +19,7 @@ export default class UserAPI extends DataSource {
    * like caches and context. We'll assign this.context to the request context
    * here, so we can know about the user making requests
    */
-  public initialize(config) {
+  public initialize(config: DataSourceConfig<IContext>) {
     this.context = config.context;
   }
 
@@ -26,7 +28,7 @@ export default class UserAPI extends DataSource {
    * have to be. If the user is already on the context, it will use that user
    * instead
    */
-  public async findOrCreateUser({ email: emailArg = null } = {}) {
+  public async findOrCreateUser({ email: emailArg }: { email?: string } = {}) {
     const email =
       this.context && this.context.user ? this.context.user.email : emailArg;
     if (!email || !isEmail.validate(email)) return null;
@@ -83,7 +85,7 @@ export default class UserAPI extends DataSource {
       where: { userId: user.id },
     });
     return found && found.length
-      ? found.map(l => l.dataValues.launchId).filter(l => !!l)
+      ? found.map(l => l.launchId).filter(l => !!l)
       : [];
   }
 

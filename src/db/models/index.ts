@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import configFile from '../config.json';
-import tripFactory from './trip';
-import userFactory from './user';
+import tripFactory, { ITripAttributes, TripInstance } from './trip';
+import userFactory, { IUserAttributes, UserInstance } from './user';
 
 interface IConfig {
   [key: string]: Sequelize.Options;
@@ -15,7 +15,14 @@ const options = {
 
 const sequelize = new Sequelize('database', 'username', 'password', options);
 
-const db = {
+export interface IDatabase {
+  sequelize: Sequelize.Sequelize;
+  Sequelize: Sequelize.SequelizeStatic;
+  trips: Sequelize.Model<TripInstance, ITripAttributes>;
+  users: Sequelize.Model<UserInstance, IUserAttributes>;
+}
+
+const db: IDatabase = {
   sequelize,
   Sequelize,
   trips: tripFactory(sequelize),

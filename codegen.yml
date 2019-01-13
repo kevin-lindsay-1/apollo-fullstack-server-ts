@@ -4,6 +4,12 @@ require:
   - ts-node/register
 generates:
   src/generated/graphql.ts:
+    config:
+      contextType: ../#IContext
+      mappers:
+        User: ../db/models/user#IUserAttributes
+        Launch: ../datasources/launch#IReducedLaunch
+        Mission: ../datasources/launch#IMission
     plugins:
       - 'typescript-common'
       - 'typescript-server'

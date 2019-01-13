@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize';
 
-interface IUserAttributes {
+export interface IUserAttributes {
   id: number;
   createdAt?: string;
   updatedAt?: string;
@@ -8,7 +8,8 @@ interface IUserAttributes {
   token?: string;
 }
 
-type UserInstance = Sequelize.Instance<IUserAttributes> & IUserAttributes;
+export type UserInstance = Sequelize.Instance<IUserAttributes> &
+  IUserAttributes;
 
 export default (sequelize: Sequelize.Sequelize) => {
   const attributes: SequelizeAttributes<IUserAttributes> = {

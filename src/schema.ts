@@ -6,7 +6,7 @@ export const typeDefs = gql`
       """
       The number of results to show. Must be >= 1.
       """
-      pageSize: Int = 20
+      pageSize: Int = 30
       """
       If you add a cursor here, it will only return results _after_ this cursor
       """

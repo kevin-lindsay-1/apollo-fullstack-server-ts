@@ -19,7 +19,8 @@
       "background": "yellow"
     }
   },
-  "tslint.exclude": "**/node_modules/**/*",
-  "tslint.ignoreDefinitionFiles": false,
-  "typescript.referencesCodeLens.enabled": true
+  "typescript.referencesCodeLens.enabled": true,
+  "files.exclude": {
+    "**/node_modules": true
+  }
 }

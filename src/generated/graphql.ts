@@ -105,6 +105,12 @@ export interface LoginMutationArgs {
 
 import { GraphQLResolveInfo } from 'graphql';
 
+import { IUserAttributes } from '../db/models/user';
+
+import { IReducedLaunch, IMission } from '../datasources/launch';
+
+import { IContext } from '../';
+
 export type Resolver<Result, Parent = {}, Context = {}, Args = {}> = (
   parent: Parent,
   args: Args,
@@ -155,18 +161,18 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 ) => TResult | Promise<TResult>;
 
 export namespace QueryResolvers {
-  export interface Resolvers<Context = {}, TypeParent = {}> {
+  export interface Resolvers<Context = IContext, TypeParent = {}> {
     launches?: LaunchesResolver<LaunchConnection, TypeParent, Context>;
 
-    launch?: LaunchResolver<Maybe<Launch>, TypeParent, Context>;
+    launch?: LaunchResolver<Maybe<IReducedLaunch>, TypeParent, Context>;
 
-    me?: MeResolver<Maybe<User>, TypeParent, Context>;
+    me?: MeResolver<Maybe<IUserAttributes>, TypeParent, Context>;
   }
 
   export type LaunchesResolver<
     R = LaunchConnection,
     Parent = {},
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context, LaunchesArgs>;
   export interface LaunchesArgs {
     /** The number of results to show. Must be >= 1. */
@@ -176,89 +182,92 @@ export namespace QueryResolvers {
   }
 
   export type LaunchResolver<
-    R = Maybe<Launch>,
+    R = Maybe<IReducedLaunch>,
     Parent = {},
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context, LaunchArgs>;
   export interface LaunchArgs {
     id: string;
   }
 
-  export type MeResolver<R = Maybe<User>, Parent = {}, Context = {}> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type MeResolver<
+    R = Maybe<IUserAttributes>,
+    Parent = {},
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
 }
 /** Simple wrapper around our list of launches that contains a cursor to the last item in the list. Pass this cursor to the launches query to fetch results after these. */
 export namespace LaunchConnectionResolvers {
-  export interface Resolvers<Context = {}, TypeParent = LaunchConnection> {
+  export interface Resolvers<
+    Context = IContext,
+    TypeParent = LaunchConnection
+  > {
     cursor?: CursorResolver<string, TypeParent, Context>;
 
     hasMore?: HasMoreResolver<boolean, TypeParent, Context>;
 
-    launches?: LaunchesResolver<(Maybe<Launch>)[], TypeParent, Context>;
+    launches?: LaunchesResolver<(Maybe<IReducedLaunch>)[], TypeParent, Context>;
   }
 
   export type CursorResolver<
     R = string,
     Parent = LaunchConnection,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type HasMoreResolver<
     R = boolean,
     Parent = LaunchConnection,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type LaunchesResolver<
-    R = (Maybe<Launch>)[],
+    R = (Maybe<IReducedLaunch>)[],
     Parent = LaunchConnection,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
 }
 
 export namespace LaunchResolvers {
-  export interface Resolvers<Context = {}, TypeParent = Launch> {
+  export interface Resolvers<Context = IContext, TypeParent = IReducedLaunch> {
     id?: IdResolver<string, TypeParent, Context>;
 
     site?: SiteResolver<Maybe<string>, TypeParent, Context>;
 
-    mission?: MissionResolver<Maybe<Mission>, TypeParent, Context>;
+    mission?: MissionResolver<Maybe<IMission>, TypeParent, Context>;
 
     rocket?: RocketResolver<Maybe<Rocket>, TypeParent, Context>;
 
     isBooked?: IsBookedResolver<boolean, TypeParent, Context>;
   }
 
-  export type IdResolver<R = string, Parent = Launch, Context = {}> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type IdResolver<
+    R = string,
+    Parent = IReducedLaunch,
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
   export type SiteResolver<
     R = Maybe<string>,
-    Parent = Launch,
-    Context = {}
+    Parent = IReducedLaunch,
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type MissionResolver<
-    R = Maybe<Mission>,
-    Parent = Launch,
-    Context = {}
+    R = Maybe<IMission>,
+    Parent = IReducedLaunch,
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type RocketResolver<
     R = Maybe<Rocket>,
-    Parent = Launch,
-    Context = {}
+    Parent = IReducedLaunch,
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type IsBookedResolver<
     R = boolean,
-    Parent = Launch,
-    Context = {}
+    Parent = IReducedLaunch,
+    Context = IContext
   > = Resolver<R, Parent, Context>;
 }
 
 export namespace MissionResolvers {
-  export interface Resolvers<Context = {}, TypeParent = Mission> {
+  export interface Resolvers<Context = IContext, TypeParent = IMission> {
     name?: NameResolver<Maybe<string>, TypeParent, Context>;
 
     missionPatch?: MissionPatchResolver<Maybe<string>, TypeParent, Context>;
@@ -266,13 +275,13 @@ export namespace MissionResolvers {
 
   export type NameResolver<
     R = Maybe<string>,
-    Parent = Mission,
-    Context = {}
+    Parent = IMission,
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type MissionPatchResolver<
     R = Maybe<string>,
-    Parent = Mission,
-    Context = {}
+    Parent = IMission,
+    Context = IContext
   > = Resolver<R, Parent, Context, MissionPatchArgs>;
   export interface MissionPatchArgs {
     size?: PatchSize;
@@ -280,7 +289,7 @@ export namespace MissionResolvers {
 }
 
 export namespace RocketResolvers {
-  export interface Resolvers<Context = {}, TypeParent = Rocket> {
+  export interface Resolvers<Context = IContext, TypeParent = Rocket> {
     id?: IdResolver<string, TypeParent, Context>;
 
     name?: NameResolver<Maybe<string>, TypeParent, Context>;
@@ -288,51 +297,51 @@ export namespace RocketResolvers {
     type?: TypeResolver<Maybe<string>, TypeParent, Context>;
   }
 
-  export type IdResolver<R = string, Parent = Rocket, Context = {}> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type IdResolver<
+    R = string,
+    Parent = Rocket,
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
   export type NameResolver<
     R = Maybe<string>,
     Parent = Rocket,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type TypeResolver<
     R = Maybe<string>,
     Parent = Rocket,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
 }
 
 export namespace UserResolvers {
-  export interface Resolvers<Context = {}, TypeParent = User> {
+  export interface Resolvers<Context = IContext, TypeParent = IUserAttributes> {
     id?: IdResolver<string, TypeParent, Context>;
 
     email?: EmailResolver<string, TypeParent, Context>;
 
-    trips?: TripsResolver<(Maybe<Launch>)[], TypeParent, Context>;
+    trips?: TripsResolver<(Maybe<IReducedLaunch>)[], TypeParent, Context>;
   }
 
-  export type IdResolver<R = string, Parent = User, Context = {}> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
-  export type EmailResolver<R = string, Parent = User, Context = {}> = Resolver<
-    R,
-    Parent,
-    Context
-  >;
+  export type IdResolver<
+    R = string,
+    Parent = IUserAttributes,
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
+  export type EmailResolver<
+    R = string,
+    Parent = IUserAttributes,
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
   export type TripsResolver<
-    R = (Maybe<Launch>)[],
-    Parent = User,
-    Context = {}
+    R = (Maybe<IReducedLaunch>)[],
+    Parent = IUserAttributes,
+    Context = IContext
   > = Resolver<R, Parent, Context>;
 }
 
 export namespace MutationResolvers {
-  export interface Resolvers<Context = {}, TypeParent = {}> {
+  export interface Resolvers<Context = IContext, TypeParent = {}> {
     /** if false, booking failed -- check errors */
     bookTrips?: BookTripsResolver<TripUpdateResponse, TypeParent, Context>;
     /** if false, cancellation failed -- check errors */
@@ -344,7 +353,7 @@ export namespace MutationResolvers {
   export type BookTripsResolver<
     R = TripUpdateResponse,
     Parent = {},
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context, BookTripsArgs>;
   export interface BookTripsArgs {
     launchIds: (Maybe<string>)[];
@@ -353,7 +362,7 @@ export namespace MutationResolvers {
   export type CancelTripResolver<
     R = TripUpdateResponse,
     Parent = {},
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context, CancelTripArgs>;
   export interface CancelTripArgs {
     launchId: string;
@@ -362,7 +371,7 @@ export namespace MutationResolvers {
   export type LoginResolver<
     R = Maybe<string>,
     Parent = {},
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context, LoginArgs>;
   export interface LoginArgs {
     email?: Maybe<string>;
@@ -370,28 +379,35 @@ export namespace MutationResolvers {
 }
 
 export namespace TripUpdateResponseResolvers {
-  export interface Resolvers<Context = {}, TypeParent = TripUpdateResponse> {
+  export interface Resolvers<
+    Context = IContext,
+    TypeParent = TripUpdateResponse
+  > {
     success?: SuccessResolver<boolean, TypeParent, Context>;
 
     message?: MessageResolver<Maybe<string>, TypeParent, Context>;
 
-    launches?: LaunchesResolver<Maybe<(Maybe<Launch>)[]>, TypeParent, Context>;
+    launches?: LaunchesResolver<
+      Maybe<(Maybe<IReducedLaunch>)[]>,
+      TypeParent,
+      Context
+    >;
   }
 
   export type SuccessResolver<
     R = boolean,
     Parent = TripUpdateResponse,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type MessageResolver<
     R = Maybe<string>,
     Parent = TripUpdateResponse,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
   export type LaunchesResolver<
-    R = Maybe<(Maybe<Launch>)[]>,
+    R = Maybe<(Maybe<IReducedLaunch>)[]>,
     Parent = TripUpdateResponse,
-    Context = {}
+    Context = IContext
   > = Resolver<R, Parent, Context>;
 }
 
@@ -399,7 +415,7 @@ export namespace TripUpdateResponseResolvers {
 export type SkipDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
   SkipDirectiveArgs,
-  {}
+  IContext
 >;
 export interface SkipDirectiveArgs {
   /** Skipped when true. */
@@ -410,7 +426,7 @@ export interface SkipDirectiveArgs {
 export type IncludeDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
   IncludeDirectiveArgs,
-  {}
+  IContext
 >;
 export interface IncludeDirectiveArgs {
   /** Included when true. */
@@ -421,7 +437,7 @@ export interface IncludeDirectiveArgs {
 export type DeprecatedDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
   DeprecatedDirectiveArgs,
-  {}
+  IContext
 >;
 export interface DeprecatedDirectiveArgs {
   /** Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax (as specified by [CommonMark](https://commonmark.org/). */

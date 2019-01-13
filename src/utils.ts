@@ -1,20 +1,14 @@
-interface IResult {
-  cursor?: string;
-}
-
-interface IPaginateResults {
-  after: string;
-  pageSize: number;
-  results: IResult[];
-  getCursor: (item: IResult) => string;
-}
-
 export const paginateResults = ({
   after: cursor,
   pageSize = 20,
   results,
   getCursor,
-}: IPaginateResults) => {
+}: {
+  after?: string | null;
+  pageSize?: number;
+  results: any[];
+  getCursor?: (item: any) => string;
+}) => {
   if (pageSize < 1) return [];
 
   if (!cursor) return results.slice(0, pageSize);
