@@ -1,7 +1,7 @@
 import * as Sequelize from 'sequelize';
 
 export interface ITripAttributes {
-  id: number;
+  id: string;
   createdAt?: string;
   updatedAt?: string;
   launchId: string;

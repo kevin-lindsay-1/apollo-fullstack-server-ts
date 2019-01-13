@@ -6,10 +6,11 @@
     "tslint-config-prettier"
   ],
   "linterOptions": {
-    "exclude": ["**/node_modules/**/*", "src/generated/**/*"]
+    "exclude": ["**/node_modules/**/*", "src/generated/**/*", "**/*.json"]
   },
   "rules": {
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "await-promise": [true, "Bluebird"]
   },
   "jsRules": {}
 }

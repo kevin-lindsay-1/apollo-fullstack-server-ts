@@ -6,7 +6,7 @@ export const typeDefs = gql`
       """
       The number of results to show. Must be >= 1.
       """
-      pageSize: Int = 30
+      pageSize: Int = 20
       """
       If you add a cursor here, it will only return results _after_ this cursor
       """
@@ -20,14 +20,14 @@ export const typeDefs = gql`
     """
     if false, booking failed -- check errors
     """
-    bookTrips(launchIds: [ID]!): TripUpdateResponse!
+    bookTrips(launchIds: [ID!]!): TripUpdateResponse!
 
     """
     if false, cancellation failed -- check errors
     """
     cancelTrip(launchId: ID!): TripUpdateResponse!
 
-    login(email: String): String # login token
+    login(email: String!): String! # login token
   }
 
   type TripUpdateResponse {

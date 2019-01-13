@@ -6,7 +6,7 @@ import { IDatabase } from '../db/models';
 
 export default class UserAPI extends DataSource {
   private store: IDatabase;
-  private context: IContext;
+  private context!: IContext;
 
   constructor({ store }: { store: IDatabase }) {
     super();
@@ -37,7 +37,7 @@ export default class UserAPI extends DataSource {
     return users && users[0] ? users[0] : null;
   }
 
-  public async bookTrips({ launchIds }) {
+  public async bookTrips({ launchIds }: { launchIds: string[] }) {
     const { user } = this.context;
     if (!user || !user.id) {
       throw new AuthenticationError('You are not logged in');
@@ -55,7 +55,7 @@ export default class UserAPI extends DataSource {
     return results;
   }
 
-  public async bookTrip({ launchId }) {
+  public async bookTrip({ launchId }: { launchId: string }) {
     const { user } = this.context;
     if (!user || !user.id) {
       throw new AuthenticationError('You are not logged in');
@@ -66,7 +66,7 @@ export default class UserAPI extends DataSource {
     return res && res.length ? res[0].get() : false;
   }
 
-  public async cancelTrip({ launchId }) {
+  public async cancelTrip({ launchId }: { launchId: string }) {
     const { user } = this.context;
     if (!user || !user.id) {
       throw new AuthenticationError('You are not logged in');
@@ -89,7 +89,7 @@ export default class UserAPI extends DataSource {
       : [];
   }
 
-  public async isBookedOnLaunch({ launchId }) {
+  public async isBookedOnLaunch({ launchId }: { launchId: string }) {
     const { user } = this.context;
     if (!user || !user.id) {
       throw new AuthenticationError('You are not logged in');

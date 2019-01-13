@@ -2,22 +2,21 @@ export const paginateResults = ({
   after: cursor,
   pageSize = 20,
   results,
-  getCursor,
+  getCursor = () => null,
 }: {
   after?: string | null;
   pageSize?: number;
   results: any[];
-  getCursor?: (item: any) => string;
+  getCursor?: (item: any) => string | null;
 }) => {
   if (pageSize < 1) return [];
 
   if (!cursor) return results.slice(0, pageSize);
-  const cursorIndex = results.findIndex(item => {
-    // if an item has a `cursor` on it, use that, otherwise try to generate one
-    const itemCursor = item.cursor ? item.cursor : getCursor(item);
-
+  const cursorIndex = results.findIndex(result => {
+    // if an result has a `cursor` on it, use that, otherwise try to generate one
+    const resultCursor = result.cursor || getCursor(result);
     // if there's still not a cursor, return false by default
-    return itemCursor ? cursor === itemCursor : false;
+    return resultCursor ? cursor === resultCursor : false;
   });
 
   return cursorIndex >= 0

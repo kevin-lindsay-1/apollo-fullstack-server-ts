@@ -42,16 +42,16 @@ const Mutation: MutationResolvers.Resolvers = {
     const launches = await dataSources.launchAPI.getLaunchesByIds({
       launchIds,
     });
+    const success = results && results.length === launchIds.length;
 
     return {
-      success: results && results.length === launchIds.length,
-      message:
-        results.length === launchIds.length
-          ? 'trips booked successfully'
-          : `the following launches couldn't be booked: ${launchIds.filter(
-              id => !results.includes(id)
-            )}`,
       launches,
+      success,
+      message: success
+        ? 'trips booked successfully'
+        : `the following launches couldn't be booked: ${launchIds.filter(id =>
+            results.some(result => result.id === id)
+          )}`,
     };
   },
   cancelTrip: async (_, { launchId }, { dataSources }) => {
@@ -74,6 +74,7 @@ const Mutation: MutationResolvers.Resolvers = {
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
     if (user) return Buffer.from(email).toString('base64');
+    return 'failed to login';
   },
 };
 

@@ -24,7 +24,7 @@ export interface IMission {
   missionPatchLarge: string;
 }
 
-export interface IReducedLaunch {
+export interface IResolvedLaunch {
   id: string;
   cursor: string;
   site: string;
@@ -36,6 +36,12 @@ export interface IReducedLaunch {
   };
 }
 
+export interface ITripUpdateResponse {
+  success: boolean;
+  message: string;
+  launches?: IResolvedLaunch[];
+}
+
 export default class LaunchAPI extends RESTDataSource {
   constructor() {
     super();
@@ -43,7 +49,7 @@ export default class LaunchAPI extends RESTDataSource {
   }
 
   // leaving this inside the class to make the class easier to test
-  public launchReducer(launch: IDataSourceLaunch): IReducedLaunch {
+  public launchReducer(launch: IDataSourceLaunch): IResolvedLaunch {
     return {
       id: launch.flight_number || '0',
       cursor: `${launch.launch_date_unix}`,
@@ -73,11 +79,7 @@ export default class LaunchAPI extends RESTDataSource {
     return this.launchReducer(res[0]);
   }
 
-  public async getLaunchesByIds({
-    launchIds,
-  }: {
-    launchIds: Array<string | null>;
-  }) {
+  public async getLaunchesByIds({ launchIds }: { launchIds: string[] }) {
     return Promise.all(
       launchIds.map(launchId => this.getLaunchById({ launchId }))
     );
