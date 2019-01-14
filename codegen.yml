@@ -2,7 +2,8 @@ schema:
   - ./src/gql/index.ts
   - ./src/gql/*/*.ts
 generates:
-  ./src/gql/types.ts:
+  ./src/gql/types.d.ts:
+    add: import * from './src/gql/types.d.ts'
     config:
       contextType: ../#IContext
       mappers:

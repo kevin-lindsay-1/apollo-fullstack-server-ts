@@ -64,9 +64,9 @@ export const typeDefs = gql`
 `;
 
 interface IResolvers {
+  Query: QueryResolvers.Resolvers;
   Mutation: MutationResolvers.Resolvers;
   Launch: LaunchResolvers.Resolvers;
-  Query: QueryResolvers.Resolvers;
 }
 
 export const resolvers: IResolvers = {
