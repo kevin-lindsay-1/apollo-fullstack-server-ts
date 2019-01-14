@@ -63,7 +63,7 @@ export default class UserAPI extends DataSource {
     const res = await this.store.trips.findOrCreate({
       where: { userId: user.id, launchId },
     });
-    return res && res.length ? res[0].get() : false;
+    return res[0] || false;
   }
 
   public async cancelTrip({ launchId }: { launchId: string }) {

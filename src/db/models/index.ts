@@ -22,17 +22,17 @@ export interface IDatabase {
   users: Sequelize.Model<UserInstance, IUserAttributes>;
 }
 
-const db: IDatabase = {
+const database: IDatabase = {
   sequelize,
   Sequelize,
   trips: tripFactory(sequelize),
   users: userFactory(sequelize),
 };
 
-Object.values(db).forEach((model: any) => {
+Object.values(database).forEach((model: any) => {
   if (model.associate) {
-    model.associate(db);
+    model.associate(database);
   }
 });
 
-export default db;
+export default database;

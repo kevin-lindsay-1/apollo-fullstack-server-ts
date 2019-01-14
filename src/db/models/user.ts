@@ -11,7 +11,7 @@ export interface IUserAttributes {
 export type UserInstance = Sequelize.Instance<IUserAttributes> &
   IUserAttributes;
 
-export default (sequelize: Sequelize.Sequelize) => {
+export function userFactory(sequelize: Sequelize.Sequelize) {
   const attributes: SequelizeAttributes<IUserAttributes> = {
     id: {
       autoIncrement: true,
@@ -24,4 +24,6 @@ export default (sequelize: Sequelize.Sequelize) => {
     token: Sequelize.STRING,
   };
   return sequelize.define<UserInstance, IUserAttributes>('user', attributes);
-};
+}
+
+export default userFactory;

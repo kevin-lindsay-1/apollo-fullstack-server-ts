@@ -1,13 +1,13 @@
 overwrite: true
-schema: './src/schema.ts'
+schema: './src/gql'
 require:
   - ts-node/register
 generates:
-  src/generated/graphql.ts:
+  ./src/gql/types.ts:
     config:
       contextType: ../#IContext
       mappers:
-        User: ../db/models/user#IUserAttributes
+        User: ../db/models/user#UserInstance
         Launch: ../datasources/launch#IResolvedLaunch
         Mission: ../datasources/launch#IMission
         TripUpdateResponse: ../datasources/launch#ITripUpdateResponse
@@ -15,6 +15,3 @@ generates:
       - 'typescript-common'
       - 'typescript-server'
       - 'typescript-resolvers'
-  ./graphql.schema.json:
-    plugins:
-      - 'introspection'

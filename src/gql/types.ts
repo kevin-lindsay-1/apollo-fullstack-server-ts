@@ -10,6 +10,9 @@ export enum PatchSize {
 // ====================================================
 
 export interface Query {
+  /** Ignore this; needed something for each root type to get them to appear */
+  _?: Maybe<boolean>;
+
   launches: LaunchConnection;
 
   launch?: Maybe<Launch>;
@@ -61,6 +64,8 @@ export interface User {
 }
 
 export interface Mutation {
+  /** Ignore this; needed something for each root type to get them to appear */
+  _?: Maybe<boolean>;
   /** if false, booking failed -- check errors */
   bookTrips: TripUpdateResponse;
   /** if false, cancellation failed -- check errors */
@@ -75,6 +80,11 @@ export interface TripUpdateResponse {
   message?: Maybe<string>;
 
   launches?: Maybe<(Maybe<Launch>)[]>;
+}
+
+export interface Subscription {
+  /** Ignore this; needed something for each root type to get them to appear */
+  _?: Maybe<boolean>;
 }
 
 // ====================================================
@@ -105,7 +115,7 @@ export interface LoginMutationArgs {
 
 import { GraphQLResolveInfo } from 'graphql';
 
-import { IUserAttributes } from '../db/models/user';
+import { UserInstance } from '../db/models/user';
 
 import {
   IResolvedLaunch,
@@ -166,13 +176,21 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = IContext, TypeParent = {}> {
+    /** Ignore this; needed something for each root type to get them to appear */
+    _?: _Resolver<Maybe<boolean>, TypeParent, Context>;
+
     launches?: LaunchesResolver<LaunchConnection, TypeParent, Context>;
 
     launch?: LaunchResolver<Maybe<IResolvedLaunch>, TypeParent, Context>;
 
-    me?: MeResolver<Maybe<IUserAttributes>, TypeParent, Context>;
+    me?: MeResolver<Maybe<UserInstance>, TypeParent, Context>;
   }
 
+  export type _Resolver<
+    R = Maybe<boolean>,
+    Parent = {},
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
   export type LaunchesResolver<
     R = LaunchConnection,
     Parent = {},
@@ -195,7 +213,7 @@ export namespace QueryResolvers {
   }
 
   export type MeResolver<
-    R = Maybe<IUserAttributes>,
+    R = Maybe<UserInstance>,
     Parent = {},
     Context = IContext
   > = Resolver<R, Parent, Context>;
@@ -323,7 +341,7 @@ export namespace RocketResolvers {
 }
 
 export namespace UserResolvers {
-  export interface Resolvers<Context = IContext, TypeParent = IUserAttributes> {
+  export interface Resolvers<Context = IContext, TypeParent = UserInstance> {
     id?: IdResolver<string, TypeParent, Context>;
 
     email?: EmailResolver<string, TypeParent, Context>;
@@ -333,23 +351,25 @@ export namespace UserResolvers {
 
   export type IdResolver<
     R = string,
-    Parent = IUserAttributes,
+    Parent = UserInstance,
     Context = IContext
   > = Resolver<R, Parent, Context>;
   export type EmailResolver<
     R = string,
-    Parent = IUserAttributes,
+    Parent = UserInstance,
     Context = IContext
   > = Resolver<R, Parent, Context>;
   export type TripsResolver<
     R = (Maybe<IResolvedLaunch>)[],
-    Parent = IUserAttributes,
+    Parent = UserInstance,
     Context = IContext
   > = Resolver<R, Parent, Context>;
 }
 
 export namespace MutationResolvers {
   export interface Resolvers<Context = IContext, TypeParent = {}> {
+    /** Ignore this; needed something for each root type to get them to appear */
+    _?: _Resolver<Maybe<boolean>, TypeParent, Context>;
     /** if false, booking failed -- check errors */
     bookTrips?: BookTripsResolver<ITripUpdateResponse, TypeParent, Context>;
     /** if false, cancellation failed -- check errors */
@@ -358,6 +378,11 @@ export namespace MutationResolvers {
     login?: LoginResolver<string, TypeParent, Context>;
   }
 
+  export type _Resolver<
+    R = Maybe<boolean>,
+    Parent = {},
+    Context = IContext
+  > = Resolver<R, Parent, Context>;
   export type BookTripsResolver<
     R = ITripUpdateResponse,
     Parent = {},
@@ -419,6 +444,19 @@ export namespace TripUpdateResponseResolvers {
   > = Resolver<R, Parent, Context>;
 }
 
+export namespace SubscriptionResolvers {
+  export interface Resolvers<Context = IContext, TypeParent = {}> {
+    /** Ignore this; needed something for each root type to get them to appear */
+    _?: _Resolver<Maybe<boolean>, TypeParent, Context>;
+  }
+
+  export type _Resolver<
+    R = Maybe<boolean>,
+    Parent = {},
+    Context = IContext
+  > = SubscriptionResolver<R, Parent, Context>;
+}
+
 /** Directs the executor to skip this field or fragment when the `if` argument is true. */
 export type SkipDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
@@ -461,6 +499,7 @@ export interface IResolvers {
   User?: UserResolvers.Resolvers;
   Mutation?: MutationResolvers.Resolvers;
   TripUpdateResponse?: TripUpdateResponseResolvers.Resolvers;
+  Subscription?: SubscriptionResolvers.Resolvers;
 }
 
 export interface IDirectiveResolvers<Result> {

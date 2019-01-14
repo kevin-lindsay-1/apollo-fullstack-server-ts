@@ -4,13 +4,12 @@ import { Request } from 'express';
 import isEmail from 'isemail';
 import LaunchAPI from './datasources/launch';
 import UserAPI from './datasources/user';
-import db from './db/models';
+import database from './db/models';
 import { UserInstance } from './db/models/user';
-import resolvers from './resolvers';
-import typeDefs from './schema';
+import schema from './gql';
 
 // connect to ORM
-const store = db;
+const store = database;
 
 export interface IDataSources {
   launchAPI: LaunchAPI;
@@ -49,8 +48,7 @@ const context: ContextFunction = async ({ req }: { req: Request }) => {
 
 // Set up Apollo Server
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   dataSources,
   context,
   engine: {
