@@ -1,7 +1,6 @@
-overwrite: true
-schema: './src/gql'
-require:
-  - ts-node/register
+schema:
+  - ./src/gql/index.ts
+  - ./src/gql/*/*.ts
 generates:
   ./src/gql/types.ts:
     config:
@@ -15,3 +14,6 @@ generates:
       - 'typescript-common'
       - 'typescript-server'
       - 'typescript-resolvers'
+overwrite: true
+require:
+  - ts-node/register
