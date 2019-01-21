@@ -10,12 +10,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin"
+      }
+    ],
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2015",
-    "plugins": [{ "name": "typescript-tslint-plugin" }]
+    "target": "es2015"
   },
   "include": ["src"]
 }
