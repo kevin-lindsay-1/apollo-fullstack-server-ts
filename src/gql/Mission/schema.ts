@@ -2,6 +2,10 @@ import { gql } from 'apollo-server';
 import { MissionResolvers, PatchSize } from '../types';
 
 export const typeDefs = gql`
+  extend type Launch {
+    mission: Mission
+  }
+
   type Mission {
     name: String
     missionPatch(size: PatchSize = LARGE): String
@@ -26,3 +30,5 @@ export const resolvers: IResolvers = {
     },
   },
 };
+
+export default { typeDefs, resolvers };

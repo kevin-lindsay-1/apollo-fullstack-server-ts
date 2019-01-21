@@ -5,8 +5,6 @@ type SequelizeAttribute =
   | DataTypeAbstract
   | DefineAttributeColumnOptions;
 
-declare global {
-  type SequelizeAttributes<T extends { [key: string]: any }> = {
-    [P in keyof T]: SequelizeAttribute
-  };
-}
+export type SequelizeAttributes<T extends { [key: string]: any }> = {
+  [P in keyof T]: SequelizeAttribute
+};

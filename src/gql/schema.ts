@@ -1,13 +1,10 @@
 import { gql, makeExecutableSchema } from 'apollo-server';
-import * as Launch from './Launch';
-import * as Mission from './Mission';
-import * as User from './User';
-
-const schemas = {
-  Launch,
-  Mission,
-  User,
-};
+import { DocumentNode } from 'graphql';
+import Launch from './Launch/schema';
+import Mission from './Mission/schema';
+import Rocket from './Rocket/schema';
+import TripUpdateResponse from './TripUpdateResponse/schema';
+import User from './User/schema';
 
 const BaseQuery = gql`
   type Query {
@@ -30,16 +27,29 @@ const BaseQuery = gql`
   }
 `;
 
+const schemas = {
+  Launch,
+  Mission,
+  User,
+  Rocket,
+  TripUpdateResponse,
+};
+
+interface IMergedSchema {
+  typeDefs: DocumentNode[];
+  resolvers: any[];
+}
+
 const mergedSchema = Object.values(schemas).reduce(
-  (acc, schema): { acc: any; schema: any } => {
-    acc.typeDefs = [...acc.typeDefs, schema.typeDefs];
-    acc.resolvers = [...acc.resolvers, schema.resolvers];
+  (acc, cur) => {
+    acc.typeDefs = [...acc.typeDefs, cur.typeDefs];
+    acc.resolvers = [...acc.resolvers, cur.resolvers];
     return acc;
   },
   {
     typeDefs: [BaseQuery],
     resolvers: [],
-  } as any
+  } as IMergedSchema
 );
 
-export default makeExecutableSchema(mergedSchema);
+export const schema = makeExecutableSchema(mergedSchema);

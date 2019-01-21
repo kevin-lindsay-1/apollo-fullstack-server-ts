@@ -1,16 +1,15 @@
 schema:
-  - ./src/gql/index.ts
+  - ./src/gql/schema.ts
   - ./src/gql/*/*.ts
 generates:
-  ./src/gql/types.d.ts:
-    add: import * from './src/gql/types.d.ts'
+  ./src/gql/types.ts:
     config:
       contextType: ../#IContext
       mappers:
         User: ../db/models/user#UserInstance
-        Launch: ../datasources/launch#IResolvedLaunch
-        Mission: ../datasources/launch#IMission
-        TripUpdateResponse: ../datasources/launch#ITripUpdateResponse
+        Launch: ./Launch/dataSource#IReducedLaunch
+        Mission: ./Mission/dataSource#IReducedMission
+        TripUpdateResponse: ./TripUpdateResponse/dataSource#ITripUpdateResponse
     plugins:
       - 'typescript-common'
       - 'typescript-server'

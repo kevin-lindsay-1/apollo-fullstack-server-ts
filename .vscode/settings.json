@@ -1,14 +1,4 @@
 {
-  "cSpell.ignorePaths": [
-    "**/package.json",
-    "**/package-lock.json",
-    "**/node_modules/**",
-    "**/vscode-extension/**",
-    "**/.git/**",
-    ".vscode",
-    "typings"
-  ],
-  "cSpell.words": ["datasource", "datasources", "isemail"],
   "editor.formatOnSave": true,
   "prettier.tslintIntegration": true,
   "todo-tree.customHighlight": {

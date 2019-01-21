@@ -1,14 +1,14 @@
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
 import { AuthenticationError } from 'apollo-server-errors';
 import isEmail from 'isemail';
-import { IContext } from '..';
-import { IDatabase } from '../db/models';
+import { IContext } from '../..';
+import { IStore } from './../dataSources';
 
-export default class UserAPI extends DataSource {
-  private store: IDatabase;
+export default class extends DataSource {
+  private store: IStore;
   private context!: IContext;
 
-  constructor({ store }: { store: IDatabase }) {
+  constructor({ store }: { store: IStore }) {
     super();
     this.store = store;
   }

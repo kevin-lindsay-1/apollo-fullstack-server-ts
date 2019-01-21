@@ -1,4 +1,5 @@
-import * as Sequelize from 'sequelize';
+import Sequelize from 'sequelize';
+import { SequelizeAttributes } from '../db';
 
 export interface ITripAttributes {
   id: string;

@@ -2,31 +2,14 @@ import { ApolloServer } from 'apollo-server';
 import { ContextFunction } from 'apollo-server-core';
 import { Request } from 'express';
 import isEmail from 'isemail';
-import LaunchAPI from './datasources/launch';
-import UserAPI from './datasources/user';
-import database from './db/models';
 import { UserInstance } from './db/models/user';
-import schema from './gql';
-
-// connect to ORM
-const store = database;
-
-export interface IDataSources {
-  launchAPI: LaunchAPI;
-  userAPI: UserAPI;
-}
+import { dataSources, IDataSources, store } from './gql/dataSources';
+import { schema } from './gql/schema';
 
 export interface IContext {
   dataSources: IDataSources;
   user: UserInstance;
 }
-
-// set up any dataSources our resolvers need
-const dataSources = () => ({
-  launchAPI: new LaunchAPI(),
-  userAPI: new UserAPI({ store }),
-});
-
 // the function that sets up the global context for each resolver, using the req
 const context: ContextFunction = async ({ req }: { req: Request }) => {
   // simple auth check on every request

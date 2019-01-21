@@ -1,6 +1,11 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
+import { IReducedRocket, reduce as reduceRocket } from '../Rocket/dataSource';
+import {
+  IReducedMission,
+  reduce as reduceMission,
+} from './../Mission/dataSource';
 
-interface IDataSourceLaunch {
+export interface IRemoteLaunch {
   flight_number: string;
   launch_date_unix: string;
   launch_site: {
@@ -18,65 +23,41 @@ interface IDataSourceLaunch {
   };
 }
 
-export interface IMission {
-  name: string;
-  missionPatchSmall: string;
-  missionPatchLarge: string;
-}
-
-export interface IResolvedLaunch {
+export interface IReducedLaunch {
   id: string;
   cursor: string;
   site: string;
-  mission: IMission;
-  rocket: {
-    id: string;
-    name: string;
-    type: string;
-  };
+  mission: IReducedMission;
+  rocket: IReducedRocket;
 }
 
-export interface ITripUpdateResponse {
-  success: boolean;
-  message: string;
-  launches?: IResolvedLaunch[];
-}
-
-export default class LaunchAPI extends RESTDataSource {
+export default class extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = 'https://api.spacexdata.com/v2/';
   }
 
   // leaving this inside the class to make the class easier to test
-  public launchReducer(launch: IDataSourceLaunch): IResolvedLaunch {
+  public reduce(launch: IRemoteLaunch): IReducedLaunch {
     return {
       id: launch.flight_number || '0',
       cursor: `${launch.launch_date_unix}`,
       site: launch.launch_site && launch.launch_site.site_name,
-      mission: {
-        name: launch.mission_name,
-        missionPatchSmall: launch.links.mission_patch_small,
-        missionPatchLarge: launch.links.mission_patch,
-      },
-      rocket: {
-        id: launch.rocket.rocket_id,
-        name: launch.rocket.rocket_name,
-        type: launch.rocket.rocket_type,
-      },
+      mission: reduceMission(launch),
+      rocket: reduceRocket(launch),
     };
   }
 
   public async getAllLaunches() {
-    const res: IDataSourceLaunch[] = await this.get('launches');
+    const res: IRemoteLaunch[] = await this.get('launches');
 
     // transform the raw launches to a more friendly
-    return res && res.length ? res.map(l => this.launchReducer(l)) : [];
+    return res && res.length ? res.map(l => this.reduce(l)) : [];
   }
 
   public async getLaunchById({ launchId }: { launchId: string }) {
     const res = await this.get('launches', { flight_number: launchId });
-    return this.launchReducer(res[0]);
+    return this.reduce(res[0]);
   }
 
   public async getLaunchesByIds({ launchIds }: { launchIds: string[] }) {
