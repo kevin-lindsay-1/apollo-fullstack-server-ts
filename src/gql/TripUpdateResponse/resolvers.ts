@@ -1,25 +1,4 @@
-import { gql } from 'apollo-server';
-import { MutationResolvers } from '../types';
-
-export const typeDefs = gql`
-  extend type Mutation {
-    """
-    if false, booking failed -- check errors
-    """
-    bookTrips(launchIds: [ID!]!): TripUpdateResponse!
-
-    """
-    if false, cancellation failed -- check errors
-    """
-    cancelTrip(launchId: ID!): TripUpdateResponse!
-  }
-
-  type TripUpdateResponse {
-    success: Boolean!
-    message: String
-    launches: [Launch]
-  }
-`;
+import { MutationResolvers } from '../typings';
 
 interface IResolvers {
   Mutation: MutationResolvers.Resolvers;
@@ -64,4 +43,4 @@ export const resolvers: IResolvers = {
   },
 };
 
-export default { typeDefs, resolvers };
+export default resolvers;

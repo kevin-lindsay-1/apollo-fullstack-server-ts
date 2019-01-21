@@ -5,7 +5,7 @@ import { HttpLink } from 'apollo-link-http';
 import { ApolloServer } from 'apollo-server';
 import fetch from 'node-fetch';
 import { context as defaultContext } from '../';
-import { schema } from '../gql/schema';
+import schema from '../gql';
 
 /**
  * Integration testing utils

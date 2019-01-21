@@ -1,8 +1,8 @@
 schema:
-  - ./src/gql/schema.ts
-  - ./src/gql/*/*.ts
+  - ./src/gql/index.ts
+  - ./src/gql/*/typeDefs.ts
 generates:
-  ./src/gql/types.ts:
+  ./src/gql/typings.ts:
     config:
       contextType: ../#IContext
       mappers:

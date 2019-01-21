@@ -3,8 +3,8 @@ import { ContextFunction } from 'apollo-server-core';
 import { Request } from 'express';
 import isEmail from 'isemail';
 import { UserInstance } from './db/models/user';
+import schema from './gql';
 import { dataSources, IDataSources, store } from './gql/dataSources';
-import { schema } from './gql/schema';
 
 export interface IContext {
   dataSources: IDataSources;

@@ -6,7 +6,7 @@
     "tslint-config-prettier"
   ],
   "linterOptions": {
-    "exclude": ["**/node_modules/**/*", "src/gql/types.ts", "**/*.json"]
+    "exclude": ["**/node_modules/**/*", "src/gql/typings.ts", "**/*.json"]
   },
   "rules": {
     "object-literal-sort-keys": false,

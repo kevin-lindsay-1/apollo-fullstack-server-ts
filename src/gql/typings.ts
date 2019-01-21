@@ -66,12 +66,12 @@ export interface User {
 export interface Mutation {
   /** Ignore this; needed something for each root type to get them to appear */
   _?: Maybe<boolean>;
-
-  login: string;
   /** if false, booking failed -- check errors */
   bookTrips: TripUpdateResponse;
   /** if false, cancellation failed -- check errors */
   cancelTrip: TripUpdateResponse;
+
+  login: string;
 }
 
 export interface TripUpdateResponse {
@@ -103,14 +103,14 @@ export interface LaunchQueryArgs {
 export interface MissionPatchMissionArgs {
   size?: PatchSize;
 }
-export interface LoginMutationArgs {
-  email: string;
-}
 export interface BookTripsMutationArgs {
   launchIds: string[];
 }
 export interface CancelTripMutationArgs {
   launchId: string;
+}
+export interface LoginMutationArgs {
+  email: string;
 }
 
 import { GraphQLResolveInfo } from 'graphql';
@@ -366,12 +366,12 @@ export namespace MutationResolvers {
   export interface Resolvers<Context = IContext, TypeParent = {}> {
     /** Ignore this; needed something for each root type to get them to appear */
     _?: _Resolver<Maybe<boolean>, TypeParent, Context>;
-
-    login?: LoginResolver<string, TypeParent, Context>;
     /** if false, booking failed -- check errors */
     bookTrips?: BookTripsResolver<ITripUpdateResponse, TypeParent, Context>;
     /** if false, cancellation failed -- check errors */
     cancelTrip?: CancelTripResolver<ITripUpdateResponse, TypeParent, Context>;
+
+    login?: LoginResolver<string, TypeParent, Context>;
   }
 
   export type _Resolver<
@@ -379,15 +379,6 @@ export namespace MutationResolvers {
     Parent = {},
     Context = IContext
   > = Resolver<R, Parent, Context>;
-  export type LoginResolver<
-    R = string,
-    Parent = {},
-    Context = IContext
-  > = Resolver<R, Parent, Context, LoginArgs>;
-  export interface LoginArgs {
-    email: string;
-  }
-
   export type BookTripsResolver<
     R = ITripUpdateResponse,
     Parent = {},
@@ -404,6 +395,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CancelTripArgs>;
   export interface CancelTripArgs {
     launchId: string;
+  }
+
+  export type LoginResolver<
+    R = string,
+    Parent = {},
+    Context = IContext
+  > = Resolver<R, Parent, Context, LoginArgs>;
+  export interface LoginArgs {
+    email: string;
   }
 }
 

@@ -1,21 +1,4 @@
-import { gql } from 'apollo-server';
-import { MutationResolvers, QueryResolvers, UserResolvers } from '../types';
-
-export const typeDefs = gql`
-  extend type Query {
-    me: User
-  }
-
-  extend type Mutation {
-    login(email: String!): String! # login token
-  }
-
-  type User {
-    id: ID!
-    email: String!
-    trips: [Launch]!
-  }
-`;
+import { MutationResolvers, QueryResolvers, UserResolvers } from '../typings';
 
 interface IResolvers {
   Query: QueryResolvers.Resolvers;
@@ -51,4 +34,4 @@ export const resolvers: IResolvers = {
   },
 };
 
-export default { typeDefs, resolvers };
+export default resolvers;
