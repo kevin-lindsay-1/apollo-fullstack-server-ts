@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server';
-import { paginateResults } from '../../utils';
 import { LaunchResolvers, QueryResolvers } from '../types';
+import { paginateResults } from '../utils';
 
 export const typeDefs = gql`
   extend type Query {
