@@ -7,9 +7,9 @@
   "scripts": {
     "start": "env-cmd .env node build/index.js",
     "debug": "env-cmd .env concurrently -k -p \"[{name}]\" -n \"GraphQL,TypeScript,Node\" -c \"red.bold,cyan.bold,green.bold\" \"npm run gqlgen:watch\" \"npm run tsc:watch\" \"npm run node:watch\"",
-    "prebuild": "npm run clean && npm run generate && npm run check",
+    "prebuild": "npm run clean && npm run gqlgen && npm run check",
     "build": "tsc",
-    "test": "jest --forceExit --coverage --verbose",
+    "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
     "test:watch": "npm run test -- --watchAll",
     "precommit": "npm run check",
     "check": "npm run lint && npm run format && npm run test",
@@ -35,6 +35,7 @@
   "devDependencies": {
     "@types/graphql": "^14.0.3",
     "@types/jest": "^23.3.10",
+    "@types/node-fetch": "^2.1.4",
     "@types/sequelize": "^4.27.33",
     "apollo-link": "^1.2.3",
     "apollo-link-http": "^1.5.5",
@@ -58,6 +59,7 @@
     "tslint-config-prettier": "^1.17.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^3.2.2",
-    "typescript-estree": "^7.0.1"
+    "typescript-estree": "^7.0.1",
+    "typescript-tslint-plugin": "^0.2.1"
   }
 }

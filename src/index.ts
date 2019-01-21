@@ -11,7 +11,7 @@ export interface IContext {
   user: UserInstance;
 }
 // the function that sets up the global context for each resolver, using the req
-const context: ContextFunction = async ({ req }: { req: Request }) => {
+export const context: ContextFunction = async ({ req }: { req: Request }) => {
   // simple auth check on every request
   const auth: string = (req.headers && req.headers.authorization) || '';
 
@@ -30,7 +30,7 @@ const context: ContextFunction = async ({ req }: { req: Request }) => {
 };
 
 // Set up Apollo Server
-const server = new ApolloServer({
+export const server = new ApolloServer({
   schema,
   dataSources,
   context,
