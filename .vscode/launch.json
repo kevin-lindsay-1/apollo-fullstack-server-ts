@@ -1,5 +1,5 @@
 {
-  // TODO: i do not know how to use this yet
+  // TODO: hook up to vscode for debug
 
   "version": "0.2.0",
   "configurations": [
