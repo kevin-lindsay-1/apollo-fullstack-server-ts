@@ -1,5 +1,8 @@
 {
   "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/node_modules": true
+  },
   "prettier.tslintIntegration": true,
   "todo-tree.customHighlight": {
     "FIXME": {
@@ -9,8 +12,5 @@
       "background": "yellow"
     }
   },
-  "typescript.referencesCodeLens.enabled": true,
-  "files.exclude": {
-    "**/node_modules": true
-  }
+  "typescript.referencesCodeLens.enabled": true
 }
