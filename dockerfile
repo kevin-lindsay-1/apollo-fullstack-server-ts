@@ -1,27 +1,23 @@
-# Arguments/varibles to be used later
-ARG port=4000
-
 # -----
 # BUILD
 # -----
 
 # Pull node LTS image
 FROM node:lts AS build
+# Environment variables
+ENV CI=true
 
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Get package information
+# Get dependency info
 COPY package*.json ./
 
-# Install all dependencies
-RUN npm i
+# Install dependencies
+RUN npm ci
 
-# Get rest of files
-COPY . ./
-
-# Run tests
-RUN npm run test
+# Get the rest
+COPY ./ ./
 
 # If tests pass, build
 RUN npm run build
@@ -33,21 +29,27 @@ RUN npm run build
 # If build succeeds, grab the output files
 # Reset the container
 FROM node:lts
+# Environment variables
+ENV NODE_ENV=production
 
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Fetch the package info
-COPY --from=build package*.json ./
+# Get env files
+COPY --from=build /usr/src/app/.env* ./
 
-# Install only prod dependencies
-RUN npm i --only-production
+# TODO: use a non-static DB
+# Get the test DB
+COPY --from=build /usr/src/app/store.sqlite ./
 
-# Get sources
-COPY --from=build build ./
+# Get dependency info
+COPY --from=build /usr/src/app/package*.json ./
 
-# Inform container runner which port to use
-EXPOSE $port
+# Install prod deps
+RUN npm ci
+
+# Get sources from previous build
+COPY --from=build /usr/src/app/build/ ./build/
 
 # Start the server when the container initializes
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]

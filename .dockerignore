@@ -3,7 +3,7 @@
 # repo information
 .git
 
-# API keys and secrets
+# local overrides of API keys and secrets
 .env.local
 .env.*.local
 
