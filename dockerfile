@@ -26,7 +26,6 @@ RUN npm run build
 # DEPLOY
 # ------
 
-# If build succeeds, grab the output files
 # Reset the container
 FROM node:lts
 # Environment variables
@@ -39,10 +38,10 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/.env* ./
 
 # TODO: use a non-static DB
-# Get the test DB
+# Get the test DB from previous build
 COPY --from=build /usr/src/app/store.sqlite ./
 
-# Get dependency info
+# Get dependency info from previous build
 COPY --from=build /usr/src/app/package*.json ./
 
 # Install prod deps
