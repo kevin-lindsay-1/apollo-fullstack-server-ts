@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - 'docker build
+        --tag "gcr.io/$PROJECT_ID/fullstack-server:latest"
+        --cache-from "gcr.io/$PROJECT_ID/fullstack-server:latest"
+        .'
+
+images:
+  - gcr.io/$PROJECT_ID/fullstack-server
