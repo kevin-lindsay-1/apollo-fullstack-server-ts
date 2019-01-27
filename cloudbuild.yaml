@@ -10,12 +10,6 @@ steps:
         --cache-from "gcr.io/$PROJECT_ID/$REPO_NAME"
         .'
 
-  # Push container to registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - push
-      - gcr.io/$PROJECT_ID/$REPO_NAME
-
   # Deploy container and rolling update
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
@@ -26,3 +20,7 @@ steps:
     env:
       - CLOUDSDK_COMPUTE_ZONE=us-central1-a
       - CLOUDSDK_CONTAINER_CLUSTER=backend
+
+# State the images that should be generated for metadata purposes
+images:
+  - gcr.io/$PROJECT_ID/$REPO_NAME
