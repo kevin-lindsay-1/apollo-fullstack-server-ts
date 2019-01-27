@@ -1,12 +1,28 @@
 steps:
+  # Build container
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
       - -c
       - 'docker build
-        --tag "gcr.io/$PROJECT_ID/fullstack-server:latest"
-        --cache-from "gcr.io/$PROJECT_ID/fullstack-server:latest"
+        --tag "gcr.io/$PROJECT_ID/$REPO_NAME"
+        --tag "gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA"
+        --cache-from "gcr.io/$PROJECT_ID/$REPO_NAME"
         .'
 
-images:
-  - gcr.io/$PROJECT_ID/fullstack-server
+  # Push container to registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - gcr.io/$PROJECT_ID/$REPO_NAME
+
+  # Deploy container and rolling update
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - set
+      - image
+      - deployment/backend
+      - fullstack-client-sha256=gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=us-central1-a
+      - CLOUDSDK_CONTAINER_CLUSTER=backend
