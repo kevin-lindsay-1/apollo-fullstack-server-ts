@@ -6,6 +6,7 @@
   "license": "ISC",
   "scripts": {
     "start": "npx --no-install env-cmd --fallback .env.local node build/index.js",
+    "start:prod": "node build/index.js",
     "debug": "npx --no-install env-cmd --fallback .env.local concurrently -k -p \"[{name}]\" -n \"GraphQL,TypeScript,Node\" -c \"red.bold,cyan.bold,green.bold\" \"npm run gqlgen:watch\" \"npm run tsc:watch\" \"npm run node:watch\"",
     "prebuild": "npm run gqlgen && npm run lint && npm run test",
     "build": "tsc",
@@ -21,7 +22,7 @@
     "node:watch": "nodemon build/index.js -- --inspect",
     "tsc:watch": "tsc -w",
     "docker:build": "docker build -t fullstack-server .",
-    "docker:run": "env-cmd .env cross-var docker run --rm -it -p $PORT:$PORT --name fullstack-server fullstack-server"
+    "docker:run": "env-cmd --fallback .env.local cross-var docker run --rm -it -e PORT=$PORT -p $PORT:$PORT --name fullstack-server fullstack-server"
   },
   "dependencies": {
     "apollo-datasource": "^0.1.3",

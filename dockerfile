@@ -30,12 +30,10 @@ RUN npm run build
 FROM node:lts
 # Environment variables
 ENV NODE_ENV=production
+ENV PORT=9999
 
 # Set the working directory
 WORKDIR /usr/src/app
-
-# Get env files
-COPY --from=build /usr/src/app/.env* ./
 
 # TODO: use a non-static DB
 # Get the test DB from previous build
@@ -51,4 +49,4 @@ RUN npm ci
 COPY --from=build /usr/src/app/build/ ./build/
 
 # Start the server when the container initializes
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:prod"]
