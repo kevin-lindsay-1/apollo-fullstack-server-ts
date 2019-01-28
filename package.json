@@ -5,8 +5,8 @@
   "version": "1.0.0",
   "license": "ISC",
   "scripts": {
-    "start": "npx --no-install env-cmd .env node build/index.js",
-    "debug": "npx --no-install env-cmd .env concurrently -k -p \"[{name}]\" -n \"GraphQL,TypeScript,Node\" -c \"red.bold,cyan.bold,green.bold\" \"npm run gqlgen:watch\" \"npm run tsc:watch\" \"npm run node:watch\"",
+    "start": "npx --no-install env-cmd --fallback .env.local node build/index.js",
+    "debug": "npx --no-install env-cmd --fallback .env.local concurrently -k -p \"[{name}]\" -n \"GraphQL,TypeScript,Node\" -c \"red.bold,cyan.bold,green.bold\" \"npm run gqlgen:watch\" \"npm run tsc:watch\" \"npm run node:watch\"",
     "prebuild": "npm run gqlgen && npm run lint && npm run test",
     "build": "tsc",
     "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
@@ -21,7 +21,7 @@
     "node:watch": "nodemon build/index.js -- --inspect",
     "tsc:watch": "tsc -w",
     "docker:build": "docker build -t fullstack-server .",
-    "docker:run": "env-cmd .env cross-var docker run --rm -it -p $APP_LISTEN_PORT:$APP_LISTEN_PORT --name fullstack-server fullstack-server"
+    "docker:run": "env-cmd .env cross-var docker run --rm -it -p $PORT:$PORT --name fullstack-server fullstack-server"
   },
   "dependencies": {
     "apollo-datasource": "^0.1.3",
